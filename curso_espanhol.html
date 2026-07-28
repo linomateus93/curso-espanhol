@@ -1,0 +1,1052 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curso de Español — GoPrint Vigo</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:#fff;color:#333;overflow:hidden;height:100vh}
+.app{display:flex;height:100vh}
+
+/* SIDEBAR */
+.sidebar{width:290px;min-width:290px;background:#1D3557;color:#fff;display:flex;flex-direction:column;height:100vh;overflow:hidden}
+.sidebar-inner{padding:20px 16px;display:flex;flex-direction:column;height:100%;overflow:hidden}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.logo-icon{font-size:28px}
+.logo-title{font-weight:800;font-size:17px;letter-spacing:-.3px}
+.logo-sub{font-size:11px;color:#A8DADC;letter-spacing:.5px}
+.progress-box{background:rgba(255,255,255,.1);border-radius:8px;padding:10px 12px;margin:8px 0 16px}
+.progress-top{display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px;color:#A8DADC}
+.progress-bar{background:rgba(255,255,255,.15);border-radius:4px;height:6px;overflow:hidden}
+.progress-fill{background:#FCBF49;height:100%;border-radius:4px;transition:width .3s}
+.tabs{display:flex;gap:4px;margin-bottom:16px}
+.tab-btn{flex:1;padding:6px 4px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:600;background:rgba(255,255,255,.1);color:#A8DADC;transition:all .15s}
+.tab-btn.active{background:#FCBF49;color:#1D3557}
+.mod-list{flex:1;overflow-y:auto;padding-right:4px}
+.mod-list::-webkit-scrollbar{width:4px}
+.mod-list::-webkit-scrollbar-thumb{background:rgba(255,255,255,.2);border-radius:4px}
+.mod-item{display:flex;align-items:center;gap:10px;width:100%;padding:10px;border-radius:8px;border:none;cursor:pointer;text-align:left;background:transparent;color:#fff;transition:background .15s;margin-bottom:2px}
+.mod-item:hover{background:rgba(255,255,255,.08)}
+.mod-item.active{background:rgba(252,191,73,.2)}
+.mod-item-icon{font-size:20px;opacity:.7;filter:grayscale(.5)}
+.mod-item.done .mod-item-icon{opacity:1;filter:none}
+.mod-item-info{flex:1;min-width:0}
+.mod-item-title{font-weight:500;font-size:13px;color:#E9ECEF;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-item.active .mod-item-title{font-weight:700;color:#FCBF49}
+.mod-item-sub{font-size:11px;color:#A8DADC;opacity:.7;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mod-item-check{color:#2D6A4F;font-size:16px;font-weight:700}
+
+/* MAIN */
+.main{flex:1;overflow-y:auto;background:#fff}
+.main-content{padding:24px 28px;max-width:740px}
+
+/* MODULE VIEW */
+.mod-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;gap:16px}
+.mod-header-icon{font-size:36px;margin-bottom:4px}
+.mod-header h1{color:#1D3557;font-size:24px;font-weight:800;line-height:1.2;margin-bottom:2px}
+.mod-header p{color:#6C757D;font-size:14px}
+.btn-complete{padding:8px 16px;border-radius:8px;border:none;cursor:pointer;font-weight:600;font-size:13px;white-space:nowrap;background:#E9ECEF;color:#666;transition:all .15s}
+.btn-complete.done{background:#2D6A4F;color:#fff}
+.btn-expand{padding:6px 14px;border-radius:6px;border:1px solid #E9ECEF;background:#F8F9FA;cursor:pointer;font-size:12px;color:#666;margin-bottom:16px;font-weight:500}
+.btn-expand:hover{background:#E9ECEF}
+
+/* SECTIONS */
+.section{border-bottom:1px solid #E9ECEF}
+.section-header{display:flex;align-items:center;justify-content:space-between;width:100%;padding:14px 0;background:none;border:none;cursor:pointer;text-align:left;color:#1D3557;font-weight:600;font-size:15px}
+.section-arrow{font-size:18px;color:#A8DADC;transition:transform .2s;flex-shrink:0;margin-left:8px}
+.section.open .section-arrow{transform:rotate(90deg)}
+.section-body{padding-bottom:16px;display:none}
+.section.open .section-body{display:block}
+
+/* TABLES */
+.table-wrap{overflow-x:auto;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;padding:10px 12px;border-bottom:2px solid #E63946;color:#1D3557;font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #E9ECEF;font-size:14px}
+tr:nth-child(even){background:#F8F9FA}
+td:first-child{color:#E63946;font-weight:600}
+
+/* PHRASES */
+.phrase{background:#FFF3CD;border-left:4px solid #FCBF49;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:8px}
+.phrase-es{font-weight:700;color:#1D3557;font-size:15px;margin-bottom:4px}
+.phrase-pt{color:#6C757D;font-size:13px}
+
+/* TRAPS */
+.trap{background:#FDE8E8;border-left:4px solid #E63946;border-radius:0 8px 8px 0;padding:12px 16px;margin-bottom:8px}
+.trap-from{font-size:13px;color:#666;margin-bottom:4px}
+.trap-wrong{font-size:14px;color:#E63946;margin-bottom:4px}
+.trap-right{font-size:14px;color:#2D6A4F;font-weight:600}
+
+/* GRAMMAR */
+.grammar-exp{color:#555;font-size:14px;margin-bottom:12px;line-height:1.5}
+.grammar-rule{background:#E8F4F8;border-radius:8px;padding:12px 16px;margin-bottom:8px}
+.grammar-label{font-weight:700;color:#1D3557;font-size:14px;margin-bottom:4px}
+.grammar-desc{color:#555;font-size:13px;margin-bottom:6px}
+.grammar-examples{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.grammar-ex{background:#fff;border:1px solid #A8DADC;border-radius:6px;padding:3px 10px;font-size:13px;color:#1D3557;font-weight:500}
+
+/* NOTE */
+.note-box{background:#E8F4F8;border-left:4px solid #457B9D;border-radius:0 8px 8px 0;padding:14px 18px;line-height:1.6;color:#1D3557;font-size:14px;margin:12px 0}
+
+/* EXERCISE */
+.exercise{background:linear-gradient(135deg,#2D6A4F,#40916C);border-radius:10px;padding:16px 20px;margin:12px 0;color:#fff}
+.exercise-label{font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;opacity:.85}
+.exercise-text{font-size:15px;line-height:1.5}
+
+/* NAV */
+.mod-nav{display:flex;justify-content:space-between;margin-top:24px;padding-top:20px;border-top:2px solid #E9ECEF}
+.nav-btn{padding:10px 20px;border-radius:8px;border:1px solid #E9ECEF;background:#fff;cursor:pointer;font-weight:600;font-size:14px;color:#1D3557;transition:all .15s}
+.nav-btn:hover{background:#F8F9FA}
+.nav-btn.next{border:none;background:#E63946;color:#fff}
+.nav-btn.next:hover{background:#C1121F}
+.nav-btn.final{border:none;background:#2D6A4F;color:#fff;cursor:default}
+
+/* SCHEDULE */
+.schedule-item{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;margin-bottom:6px;cursor:pointer;background:#F8F9FA;border:1px solid #E9ECEF;transition:all .15s}
+.schedule-item:hover{background:#EDF2F4}
+.schedule-item.done{background:#E8F8F0;border-color:#2D6A4F}
+.schedule-num{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:14px;background:#E9ECEF;color:#999;flex-shrink:0}
+.schedule-item.done .schedule-num{background:#2D6A4F;color:#fff}
+.schedule-info{flex:1}
+.schedule-title{font-weight:600;font-size:14px;color:#1D3557}
+.schedule-focus{font-size:13px;color:#6C757D}
+.schedule-icon{font-size:18px}
+
+/* TIPS */
+.tip{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #E9ECEF}
+.tip:last-child{border-bottom:none}
+.tip-icon{font-size:24px;flex-shrink:0}
+.tip-title{font-weight:600;color:#1D3557;font-size:15px}
+.tip-desc{color:#6C757D;font-size:14px;line-height:1.4;margin-top:2px}
+
+/* MOBILE */
+.hamburger{display:none;position:fixed;top:12px;left:12px;z-index:1000;width:40px;height:40px;border-radius:10px;border:none;cursor:pointer;background:#1D3557;color:#fff;font-size:20px;align-items:center;justify-content:center}
+.overlay{display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.4);z-index:998}
+@media(max-width:768px){
+  .hamburger{display:flex}
+  .sidebar{position:fixed;top:0;left:0;z-index:999;width:85vw;min-width:85vw;transform:translateX(-100%);transition:transform .25s}
+  .sidebar.open{transform:translateX(0)}
+  .overlay.show{display:block}
+  .mod-header{padding-left:44px}
+  .main-content{padding:24px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="login-screen" style="display:flex;height:100vh;align-items:center;justify-content:center;background:linear-gradient(135deg,#1D3557,#457B9D);flex-direction:column;gap:20px;padding:20px">
+  <div style="text-align:center;color:#fff">
+    <div style="font-size:60px;margin-bottom:10px">🇪🇸</div>
+    <h1 style="font-size:32px;font-weight:800;margin-bottom:4px">Curso de Español</h1>
+    <p style="font-size:16px;color:#A8DADC;margin-bottom:30px">Para brasileiros em Vigo</p>
+  </div>
+  
+  <div style="background:#fff;padding:30px;border-radius:12px;width:100%;max-width:300px;box-shadow:0 10px 40px rgba(0,0,0,.2)">
+    <p style="color:#1D3557;font-weight:600;margin-bottom:12px;font-size:14px">Quem é você?</p>
+    <button onclick="loginUser('mateus')" style="width:100%;padding:12px;border:none;background:#E63946;color:#fff;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;margin-bottom:8px;transition:all .15s">👤 Mateus</button>
+    <button onclick="loginUser('usuario2')" style="width:100%;padding:12px;border:none;background:#2D6A4F;color:#fff;border-radius:8px;font-weight:600;font-size:14px;cursor:pointer;transition:all .15s">👤 Outro usuário</button>
+    <p style="color:#999;font-size:12px;margin-top:16px;text-align:center">Seu progresso será salvo automaticamente</p>
+  </div>
+</div>
+
+<div class="app" id="app-screen" style="display:none">
+  <button class="hamburger" onclick="toggleSidebar()">☰</button>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-inner">
+      <div class="logo">
+        <span class="logo-icon">🇪🇸</span>
+        <div>
+          <div class="logo-title">Español</div>
+          <div class="logo-sub">PARA BRASILEIROS EM VIGO</div>
+        </div>
+      </div>
+
+      <div class="progress-box">
+        <div class="progress-top">
+          <span>Progresso</span>
+          <span id="progress-text">0/13 módulos</span>
+        </div>
+        <div class="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-view="module" onclick="switchView('module')">Módulos</button>
+        <button class="tab-btn" data-view="schedule" onclick="switchView('schedule')">Cronograma</button>
+        <button class="tab-btn" data-view="tips" onclick="switchView('tips')">Dicas</button>
+      </div>
+
+      <div class="mod-list" id="mod-list"></div>
+      
+      <div style="border-top:1px solid rgba(255,255,255,.2);padding-top:12px;margin-top:12px">
+        <button onclick="logout()" style="width:100%;padding:8px 12px;border-radius:6px;border:none;background:rgba(255,255,255,.1);color:#A8DADC;font-size:12px;cursor:pointer;font-weight:500;transition:all .15s">
+          🚪 Sair (<span id="current-user">Mateus</span>)
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+// ========== DATA ==========
+const MODULES = [
+  {
+    id:1, icon:"👋", title:"Apresentações", subtitle:"Primeiros contatos + SER/ESTAR",
+    sections:[
+      {title:"Vocabulário essencial",type:"table",headers:["Español","Português","Nota"],rows:[
+        ["¿Qué tal?","Como vai?","Muito mais usado que '¿Cómo estás?'"],
+        ["Encantado/a","Prazer","Use no primeiro encontro"],
+        ["¿De dónde eres?","De onde você é?","Tuteo (tú) — normal entre amigos"],
+        ["Soy brasileño","Sou brasileiro",""],
+        ["Llevo [X] aquí","Estou aqui há [X]","'Llevar' = duração no tempo"],
+        ["Me dedico a...","Eu trabalho com...","Mais natural que 'trabajo en'"],
+        ["¿A qué te dedicas?","Trabalha com o quê?",""]
+      ]},
+      {title:"Frases prontas para amanhã",type:"phrases",items:[
+        {es:"Hola, ¿qué tal? Soy Mateus, soy brasileño pero llevo ya un tiempo aquí en Vigo.",pt:"Oi, tudo bem? Sou brasileiro mas já estou há um tempo aqui em Vigo."},
+        {es:"Encantado, tío.",pt:"Prazer, cara."},
+        {es:"Me dedico a la impresión digital, tengo una imprenta online.",pt:"Trabalho com impressão digital, tenho uma gráfica online."},
+        {es:"Estoy aprendiendo español todavía, así que ten paciencia conmigo.",pt:"Ainda tô aprendendo espanhol, então tenha paciência comigo."}
+      ]},
+      {title:"Cultura: Tú vs. Usted",type:"note",content:"Na Espanha (especialmente na Galícia), o TÚ domina. Usa-se USTED apenas com pessoas muito mais velhas ou em contextos muito formais. Com amigos do tênis, vizinhos, gente da sua idade: sempre TÚ.",extra:{type:"table",headers:["Tú (informal)","Usted (formal)"],rows:[["¿Cómo estás?","¿Cómo está?"],["¿Tienes hora?","¿Tiene hora?"],["Dime","Dígame"]]}},
+      {title:"⚠️ Armadilhas BR → ES",type:"traps",items:[
+        {pt:"\"Estou no\"",wrong:"\"Estoy no\"",right:"\"No estoy\" (negação antes do verbo)"},
+        {pt:"\"Tem\" (impessoal)",wrong:"\"Tiene\"",right:"\"Hay\" (= Tem/Existe)"},
+        {pt:"\"A gente vai\"",wrong:"\"La gente va\"",right:"\"Nosotros vamos\" (la gente = as pessoas em geral)"}
+      ]},
+      {title:"Gramática: SER e ESTAR",type:"grammar",explanation:"Funciona parecido com o português, mas com diferenças cruciais.",rules:[
+        {label:"SER",desc:"Identidade, origem, profissão, características permanentes",examples:["Soy brasileño.","Soy diseñador.","Es alto."]},
+        {label:"ESTAR",desc:"Localização, estado temporário, emoções do momento",examples:["Estoy en Vigo.","Estoy cansado.","Está lloviendo."]}
+      ],differences:{title:"Diferenças chave vs. PT-BR",headers:["Português","Español","Por quê"],rows:[["Ele é casado","Él está casado","Estado, não identidade"],["É longe","Está lejos","Localização"],["Ela é morta","Ella está muerta","Estado resultante"]]}},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Apresente-se a 3 pessoas novas esta semana (no tênis, na cafeteria, num comércio). Use: nome + origem + quanto tempo em Vigo + o que faz."}
+    ]
+  },
+  {
+    id:2, icon:"🎾", title:"No tênis", subtitle:"Vocabulário esportivo + Pretérito Perfecto",
+    sections:[
+      {title:"Vocabulário do tênis",type:"table",headers:["Español","Português"],rows:[
+        ["La pista (de tenis)","A quadra"],["La raqueta","A raquete"],["La pelota","A bola"],
+        ["El saque / servicio","O saque"],["La red","A rede"],["Fuera","Fora"],
+        ["Dentro / buena","Dentro / boa"],["Derecha","Forehand"],["Revés","Backhand"],
+        ["Volea","Voleio"],["Dejada","Drop shot"],["Dobles / Individuales","Duplas / Simples"]
+      ]},
+      {title:"Antes do jogo",type:"phrases",items:[
+        {es:"¿Echamos un partido?",pt:"Jogamos uma partida?"},
+        {es:"¿Quién saca primero?",pt:"Quem saca primeiro?"},
+        {es:"¿Jugamos un set o dos?",pt:"Jogamos um set ou dois?"},
+        {es:"¿Peloteamos un poco antes?",pt:"Trocamos umas bolas antes?"}
+      ]},
+      {title:"Durante o jogo",type:"phrases",items:[
+        {es:"¡Buena bola! / ¡Gran punto!",pt:"Boa bola! / Grande ponto!"},
+        {es:"¡Fuera! / ¡Fue buena!",pt:"Fora! / Foi boa!"},
+        {es:"Ha tocado la línea.",pt:"Pegou na linha."},
+        {es:"¿Cómo vamos?",pt:"Como tá o placar?"},
+        {es:"Treinta iguales.",pt:"Trinta iguais."},
+        {es:"Ventaja tuya/mía.",pt:"Vantagem tua/minha."}
+      ]},
+      {title:"Depois do jogo",type:"phrases",items:[
+        {es:"Buen partido, tío.",pt:"Bom jogo, cara."},
+        {es:"Me has ganado bien.",pt:"Você me ganhou de boa."},
+        {es:"La próxima te gano yo.",pt:"Na próxima eu te ganho."},
+        {es:"¿Tomamos algo después?",pt:"Vamos tomar algo depois?"},
+        {es:"¿Quedamos el jueves otra vez?",pt:"Marcamos de novo na quinta?"}
+      ]},
+      {title:"Combinando jogos",type:"phrases",items:[
+        {es:"¿Te apuntas a jugar el sábado?",pt:"Topa jogar no sábado?"},
+        {es:"Nos falta un cuarto para dobles.",pt:"Falta um quarto pra duplas."},
+        {es:"¿A qué hora te viene bien?",pt:"Que hora fica bom pra você?"},
+        {es:"He reservado pista a las siete.",pt:"Reservei quadra às sete."}
+      ]},
+      {title:"⚠️ Armadilhas no tênis",type:"traps",items:[
+        {pt:"\"La cancha\"",wrong:"La cancha",right:"\"La pista\" (na Espanha)"},
+        {pt:"\"Vamos jogar\"",wrong:"\"Vamos jugar\"",right:"\"Vamos a jugar\" (preposição 'a')"},
+        {pt:"\"Gané a ti\"",wrong:"\"Gané a ti\"",right:"\"Te he ganado\" (pretérito perfecto)"}
+      ]},
+      {title:"Gramática: Pretérito Perfecto",type:"grammar",explanation:"Na Espanha, para coisas recentes (hoje, esta semana), usa-se HABER + PARTICIPIO.",rules:[
+        {label:"Formação",desc:"Haber conjugado + participio (-ado/-ido)",examples:["He jugado","Has reservado","Ha llovido","Hemos ganado","Han llegado"]},
+        {label:"Irregulares",desc:"Memorize os mais comuns",examples:["hacer→hecho","decir→dicho","ver→visto","poner→puesto","volver→vuelto","escribir→escrito","abrir→abierto"]}
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"No próximo jogo, use pelo menos 5 frases deste módulo. Depois proponha: \"¿Tomamos algo? Yo invito la primera.\""}
+    ]
+  },
+  {
+    id:3, icon:"🍻", title:"Vida social", subtitle:"Conversas casuais + GUSTAR",
+    sections:[
+      {title:"Vocabulário social",type:"table",headers:["Español","Português"],rows:[
+        ["Quedar (con alguien)","Marcar / Combinar"],["Tomar unas cañas","Tomar umas cervejas"],
+        ["Picar algo","Beliscar / Petisco"],["Pasarlo bien","Se divertir"],
+        ["Mola / mola mucho","Legal / muito legal"],["Flipar","Ficar chocado"],
+        ["Tío/tía","Cara / Mano(a)"],["Currar / curro","Trabalhar / trabalho (coloquial)"],
+        ["Me apetece","Eu tô a fim"],["Da igual","Tanto faz"],
+        ["Paso","Passo / Não quero"],["El finde","O fim de semana"]
+      ]},
+      {title:"Combinando programas",type:"phrases",items:[
+        {es:"¿Quedamos este finde?",pt:"Marcamos neste finde?"},
+        {es:"¿Te apetece ir a tomar algo?",pt:"Tá a fim de ir tomar algo?"},
+        {es:"¿Dónde quedamos?",pt:"Onde a gente se encontra?"},
+        {es:"Quedamos en la plaza a las ocho.",pt:"Encontramos na praça às oito."}
+      ]},
+      {title:"Small talk",type:"phrases",items:[
+        {es:"¿Qué tal el finde?",pt:"Como foi o finde?"},
+        {es:"¿Qué tal el curro?",pt:"Como tá o trabalho?"},
+        {es:"Aquí andamos, tirando.",pt:"Aqui vamos, levando."},
+        {es:"No me puedo quejar.",pt:"Não posso reclamar."},
+        {es:"Ha sido una semana larga.",pt:"Foi uma semana longa."}
+      ]},
+      {title:"Expressões de Vigo",type:"phrases",items:[
+        {es:"Joder",pt:"Putz / Caramba (ênfase)"},
+        {es:"Tío/tía",pt:"Em quase toda frase"},
+        {es:"Mira...",pt:"Pra iniciar explicação"},
+        {es:"O sea...",pt:"Ou seja... / Tipo..."},
+        {es:"Es que...",pt:"É que... (justificar)"},
+        {es:"Bueno...",pt:"Coringa pra qualquer frase"}
+      ]},
+      {title:"Gramática: GUSTAR e similares",type:"grammar",explanation:"O sujeito é a coisa, não a pessoa. A mí ME GUSTA + singular / ME GUSTAN + plural.",rules:[
+        {label:"Estrutura",desc:"A mí me gusta / A ti te gusta / A él le gusta",examples:["Me gusta el tenis","Me gustan las cañas","No me gusta madrugar"]},
+        {label:"Verbos iguais",desc:"Apetecer, Molar, Parecer, Encantar, Caer bien",examples:["¿Te apetece una caña?","Me mola ese plan.","Me encanta Vigo.","Me cae bien ese tío."]}
+      ]},
+      {title:"⚠️ Armadilhas",type:"traps",items:[
+        {pt:"\"Eu gosto\"",wrong:"\"Yo gusto\"",right:"\"A mí me gusta\""},
+        {pt:"\"A gente vai sair\"",wrong:"\"La gente va a salir\"",right:"\"Nosotros vamos a salir\""},
+        {pt:"\"Tô a fim\"",wrong:"\"Estoy a fin\"",right:"\"Me apetece\""}
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Combine um programa com alguém do tênis por WhatsApp em espanhol. Use: \"¿Te apetece [plan] este finde?\""}
+    ]
+  },
+  {
+    id:4, icon:"🛒", title:"Compras e restaurantes", subtitle:"Comércio + Pronomes objeto",
+    sections:[
+      {title:"No supermercado e lojas",type:"table",headers:["Español","Português"],rows:[
+        ["¿Cuánto cuesta?","Quanto custa?"],["¿Tiene...?","Tem...?"],
+        ["Me pone... / Me da...","Me dá... / Me vê..."],["La bolsa","A sacola"],
+        ["El ticket / recibo","O comprovante"],["La oferta / rebajado","Promoção / desconto"],
+        ["¿Aceptan tarjeta?","Aceitam cartão?"],["En efectivo","Em dinheiro"],["Bizum","Pagamento por telefone"]
+      ]},
+      {title:"No restaurante / bar",type:"table",headers:["Español","Português"],rows:[
+        ["¿Tienen mesa para dos?","Têm mesa pra dois?"],["La carta / el menú","O cardápio"],
+        ["El menú del día","Prato executivo"],["¿Qué me recomiendas?","O que recomenda?"],
+        ["Para mí, una caña","Pra mim, uma cerveja"],["¿Me pones otra?","Me traz outra?"],
+        ["La cuenta, por favor","A conta, por favor"],["Invito yo","Eu pago"]
+      ]},
+      {title:"Frases no restaurante",type:"phrases",items:[
+        {es:"Hola, ¿tienen mesa libre?",pt:"Tem mesa livre?"},
+        {es:"Somos cuatro.",pt:"Somos quatro."},
+        {es:"¿Se puede en la terraza?",pt:"Dá pra sentar na esplanada?"},
+        {es:"¿Me pones una caña y unas bravas?",pt:"Me traz uma cerveja e umas bravas?"},
+        {es:"¿Qué llevan las croquetas?",pt:"O que tem nas croquetas?"},
+        {es:"Perdona, esto no es lo que he pedido.",pt:"Não foi isso que eu pedi."}
+      ]},
+      {title:"Gramática: Pronomes Objeto",type:"grammar",explanation:"Posição: antes do verbo conjugado, grudado no infinitivo/gerúndio/imperativo.",rules:[
+        {label:"Direto",desc:"me, te, lo/la, nos, os, los/las",examples:["¿Me lo puedes repetir?","Te lo he dicho."]},
+        {label:"Indireto",desc:"me, te, le, nos, os, les",examples:["Le dije que sí.","Nos ha contado todo."]},
+        {label:"Regra LE+LO",desc:"LE/LES antes de LO/LA → vira SE",examples:["Se lo dije. (Eu falei pra ele.)"]}
+      ]},
+      {title:"⚠️ Armadilhas",type:"traps",items:[
+        {pt:"\"Tem mais?\"",wrong:"\"¿Tiene más?\"",right:"\"¿Hay más?\" ou \"¿Quedan más?\""},
+        {pt:"\"O garçom\"",wrong:"\"El garzón\"",right:"\"El camarero\""}
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Vá a um bar e peça tudo em espanhol. Meta: zero português. Peça o menú del día e pergunte o que inclui."}
+    ]
+  },
+  {
+    id:5, icon:"🚨", title:"Falsos amigos", subtitle:"Os 30 erros mais perigosos",
+    sections:[
+      {title:"Falsos amigos (parte 1)",type:"table",headers:["Português","Parece ser","Correto em ES","Significa..."],rows:[
+        ["Escritório","Escritorio","Oficina / Despacho","Escritorio = escrivaninha"],
+        ["Borracha","Borracha","Goma de borrar","Borracha = bêbada"],
+        ["Rato","Rato","Ratón","Rato = momento"],
+        ["Largo","Largo","Ancho","Largo = comprido"],
+        ["Pronto (ready)","Pronto","Listo","Pronto = rápido"],
+        ["Sobrenome","Sobrenombre","Apellido","Sobrenombre = apelido"],
+        ["Brinco","Brinco","Pendiente","Brinco = pulo"],
+        ["Copo","—","Vaso","Copa = taça"],
+        ["Polvo","Polvo","Pulpo","Polvo = pó"],
+        ["Talher","—","Cubierto","—"]
+      ]},
+      {title:"Falsos amigos (parte 2)",type:"table",headers:["Português","Parece ser","Correto em ES","Significa..."],rows:[
+        ["Cachorro","Cachorro","Perro","Cachorro = filhote"],
+        ["Doce (número)","Doce","Doce = 12!","Dulce = doce (sabor)"],
+        ["Pegar (segurar)","Pegar","Coger / Agarrar","Pegar = colar"],
+        ["Tirar (remover)","Tirar","Quitar / Sacar","Tirar = jogar"],
+        ["Ligar (telefone)","Ligar","Llamar","Ligar = conectar"],
+        ["Presunto","Presunto","Jamón","Presunto = suposto"],
+        ["Cadeira","Cadera","Silla","Cadera = quadril"],
+        ["Vaso (de flor)","Vaso","Jarrón / Maceta","Vaso = copo"],
+        ["Jugo (suco)","Jugo","Zumo (Espanha)","Jugo = latino-americano"],
+        ["Oficina (mecânica)","Oficina","Taller","Oficina = escritório!"]
+      ]},
+      {title:"Falsos amigos (parte 3)",type:"table",headers:["Português","Parece ser","Correto em ES","Significa..."],rows:[
+        ["Piso (chão)","Piso","Suelo","Piso = apartamento"],
+        ["Apelido","Apellido","Mote / Apodo","Apellido = sobrenome"],
+        ["Propina (suborno)","Propina","Soborno","Propina = gorjeta"],
+        ["Acordar (do sono)","Acordar","Despertarse","Acordarse = lembrar"],
+        ["Berro","Berro","Grito","Berro = agrião"],
+        ["Taza (taça)","Taza","Copa","Taza = xícara"]
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Revise estas listas 3x. Escolha 5 falsos amigos e use-os corretamente em conversas reais. Mais perigosos: borracha, largo, presunto, vaso, oficina."}
+    ]
+  },
+  {
+    id:6, icon:"📱", title:"Telefone e burocracia", subtitle:"WhatsApp + Burocracias + Condicional",
+    sections:[
+      {title:"Ao telefone",type:"phrases",items:[
+        {es:"¿Diga? / ¿Dígame?",pt:"Alô?"},
+        {es:"Hola, llamo por...",pt:"Ligo por causa de..."},
+        {es:"¿Podría hablar con...?",pt:"Poderia falar com...?"},
+        {es:"Le llamo para pedir cita.",pt:"Ligo pra marcar consulta."},
+        {es:"¿Me puede repetir, por favor?",pt:"Pode repetir?"},
+        {es:"¿Puede hablar más despacio?",pt:"Pode falar mais devagar?"}
+      ]},
+      {title:"Abreviações de WhatsApp",type:"table",headers:["Abreviação","Significado"],rows:[
+        ["q / k","que"],["tb / tmb","también"],["xq / pq","porque"],["x","por"],
+        ["xfa","por favor"],["bss","besos (normal entre amigos)"],["dnd","donde"],
+        ["finde","fin de semana"],["nse","no sé"],["dl/dm/dx/dj/dv","lun/mar/mié/jue/vie"]
+      ]},
+      {title:"Burocracias",type:"table",headers:["Español","Português"],rows:[
+        ["Pedir cita","Marcar consulta"],["El DNI / el NIE","Documento / ID estrangeiro"],
+        ["Empadronarse","Registro de residência"],["La gestoría","Escritório contábil"],
+        ["Hacienda","Receita Federal"],["La Seguridad Social","INSS"],
+        ["El autónomo","MEI / Autônomo"],["La declaración de la renta","Declaração de IR"],
+        ["Darse de alta","Iniciar atividade"],["Darse de baja","Encerrar atividade"]
+      ]},
+      {title:"Gramática: Condicional (cortesia)",type:"grammar",explanation:"Essencial para ser educado em burocracias. Formação: infinitivo + (-ía, -ías, -ía, -íamos, -íais, -ían).",rules:[
+        {label:"Regulares",desc:"Infinitivo + -ía",examples:["Podría darme cita","Querría información","Me gustaría cambiar la fecha"]},
+        {label:"Irregulares",desc:"Raiz modificada + -ía",examples:["tendría","haría","diría","sabría","saldría","vendría","pondría"]}
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Ligue para algum serviço e resolva tudo em espanhol. Use \"¿Podría...?\" para todos os pedidos."}
+    ]
+  },
+  {
+    id:7, icon:"💬", title:"Opiniões e reações", subtitle:"Sentimentos + Subjuntivo (intro)",
+    sections:[
+      {title:"Concordar e discordar",type:"table",headers:["Español","Português"],rows:[
+        ["Estoy de acuerdo","Concordo"],["Tienes razón","Tem razão"],
+        ["Exacto / Eso es","Exato / Isso"],["Claro / Por supuesto","Claro / Com certeza"],
+        ["No estoy de acuerdo","Não concordo"],["No lo veo así","Não vejo assim"],
+        ["Depende de cómo lo mires","Depende do ponto de vista"],["Hombre, no sé...","Cara, sei lá..."]
+      ]},
+      {title:"Reações coloquiais",type:"phrases",items:[
+        {es:"¡Qué fuerte!",pt:"Que absurdo!"},{es:"¡No me digas!",pt:"Sério?"},
+        {es:"¡Venga ya!",pt:"Sério? / Para!"},{es:"¡Anda ya!",pt:"Tá de brincadeira!"},
+        {es:"¡Qué pasada!",pt:"Que massa!"},{es:"Flipando",pt:"Chocado"},
+        {es:"¡Ostras!",pt:"Putz!"}
+      ]},
+      {title:"Sentimentos",type:"table",headers:["Español","Português"],rows:[
+        ["Estoy contento/a","Tô feliz"],["Estoy harto/a","Tô de saco cheio"],
+        ["Me da rabia","Me dá raiva"],["Me da pereza","Me dá preguiça"],
+        ["Qué ilusión","Que empolgação"],["Qué rollo","Que saco"],
+        ["Me alegro","Fico feliz"],["No pasa nada","Sem problema"]
+      ]},
+      {title:"Gramática: Subjuntivo (intro)",type:"grammar",explanation:"Use depois de desejo, dúvida, emoção ou pedido.",rules:[
+        {label:"Desejo",desc:"Espero que + subjuntivo",examples:["Espero que tengas razón.","Ojalá ganemos."]},
+        {label:"Dúvida",desc:"No creo que + subjuntivo",examples:["No creo que sea verdad.","No creo que pueda ir."]},
+        {label:"Emoção",desc:"Me alegro de que + subjuntivo",examples:["Me alegro de que estés bien."]},
+        {label:"Verbos chave",desc:"tener→tenga, ser→sea, estar→esté, ir→vaya, poder→pueda, hacer→haga",examples:[]}
+      ]},
+      {title:"📝 Exercício",type:"exercise",content:"Use 3 reações coloquiais e 1 frase no subjuntivo. \"Ojalá + subjuntivo\" é o mais fácil."}
+    ]
+  },
+  {
+    id:8, icon:"🎨", title:"Descrições", subtitle:"Pessoas, lugares + Comparativos",
+    sections:[
+      {title:"Descrevendo pessoas",type:"table",headers:["Español","Português"],rows:[
+        ["Guapo/a","Bonito/a"],["Majo/a","Gente boa"],["Gracioso/a","Engraçado/a"],
+        ["Pesado/a","Chato/a"],["Enrollado/a","Gente fina"],["Cabezón/a","Teimoso/a"],
+        ["Vago/a","Preguiçoso/a"],["Callado/a","Quieto/a"]
+      ]},
+      {title:"Descrevendo lugares",type:"phrases",items:[
+        {es:"Es un sitio muy acogedor.",pt:"É muito acolhedor."},
+        {es:"Está muy bien ubicado.",pt:"Muito bem localizado."},
+        {es:"Tiene muy buenas vistas.",pt:"Tem vista muito boa."},
+        {es:"No es nada del otro mundo.",pt:"Não é nada de mais."}
+      ]},
+      {title:"Gramática: Comparativos e Superlativos",type:"grammar",explanation:"Estruturas para comparar.",rules:[
+        {label:"Mais que",desc:"más... que",examples:["Vigo es más tranquilo que Madrid."]},
+        {label:"Menos que",desc:"menos... que",examples:["El tenis es menos peligroso que el fútbol."]},
+        {label:"Igual",desc:"tan... como",examples:["Es tan bueno como tú."]},
+        {label:"Superlativo",desc:"el/la más... de / -ísimo",examples:["Es la mejor pista.","Está buenísimo.","Es carísimo."]},
+        {label:"Irregulares",desc:"bueno→mejor, malo→peor, grande→mayor, pequeño→menor",examples:[]}
+      ]},
+      {title:"📝 Exercício",type:"exercise",content:"Descreva 3 pessoas que conhece em Vigo com 2+ adjetivos cada. Depois descreva um bar que gosta."}
+    ]
+  },
+  {
+    id:9, icon:"⏪", title:"Passado e histórias", subtitle:"Indefinido + Perfecto vs. Indefinido",
+    sections:[
+      {title:"Indefinido — Regulares",type:"table",headers:["","-ar (hablar)","-er (comer)","-ir (vivir)"],rows:[
+        ["Yo","hablé","comí","viví"],["Tú","hablaste","comiste","viviste"],
+        ["Él","habló","comió","vivió"],["Nosotros","hablamos","comimos","vivimos"],
+        ["Ellos","hablaron","comieron","vivieron"]
+      ]},
+      {title:"Indefinido — Irregulares",type:"table",headers:["Verbo","Yo","Tú","Él","Ellos"],rows:[
+        ["Ser/Ir","fui","fuiste","fue","fueron"],["Tener","tuve","tuviste","tuvo","tuvieron"],
+        ["Hacer","hice","hiciste","hizo","hicieron"],["Estar","estuve","estuviste","estuvo","estuvieron"],
+        ["Poder","pude","pudiste","pudo","pudieron"],["Decir","dije","dijiste","dijo","dijeron"],
+        ["Venir","vine","viniste","vino","vinieron"]
+      ]},
+      {title:"Perfecto vs. Indefinido",type:"note",content:"Período AINDA NÃO ACABOU → Perfecto. JÁ ACABOU → Indefinido.",extra:{type:"table",headers:["Perfecto (hoy, esta semana)","Indefinido (ayer, semana pasada)"],rows:[
+        ["He comido bien hoy","Comí paella ayer"],
+        ["Hemos jugado 3 veces esta semana","Jugamos 1 vez la semana pasada"],
+        ["¿Has visto esa película?","Vi esa película el año pasado"]
+      ]}},
+      {title:"Conectores para histórias",type:"phrases",items:[
+        {es:"Primero... luego... después... al final...",pt:"Primeiro... depois... no final..."},
+        {es:"De repente...",pt:"De repente..."},
+        {es:"Resulta que...",pt:"Acontece que..."},
+        {es:"Total, que...",pt:"No fim das contas..."},
+        {es:"O sea, que...",pt:"Ou seja..."}
+      ]},
+      {title:"📝 Exercício",type:"exercise",content:"Conte uma história da semana a um amigo. Use conectores e alterne Perfecto e Indefinido."}
+    ]
+  },
+  {
+    id:10, icon:"🔮", title:"Futuro e planos", subtitle:"3 formas de futuro",
+    sections:[
+      {title:"Futuro simples (suposições)",type:"grammar",explanation:"Infinitivo + (-é, -ás, -á, -emos, -éis, -án). Na prática, mais usado para SUPOSIÇÕES.",rules:[
+        {label:"Regulares",desc:"hablaré, comeré, viviré",examples:["Serán las diez.","Estará durmiendo."]},
+        {label:"Irregulares",desc:"Raiz modificada + terminação",examples:["tendré","podré","haré","diré","saldré","vendré"]}
+      ]},
+      {title:"IR + A + Infinitivo (o mais usado!)",type:"phrases",items:[
+        {es:"Voy a jugar al tenis mañana.",pt:"Vou jogar tênis amanhã."},
+        {es:"¿Vas a venir al partido?",pt:"Vai vir ao jogo?"},
+        {es:"Vamos a cenar fuera este sábado.",pt:"Vamos jantar fora neste sábado."}
+      ]},
+      {title:"Presente com valor de futuro",type:"phrases",items:[
+        {es:"Mañana juego a las siete.",pt:"Amanhã jogo às sete."},
+        {es:"El lunes empiezo el gimnasio.",pt:"Segunda começo a academia."},
+        {es:"¿Quedamos el viernes?",pt:"Marcamos pra sexta?"}
+      ]},
+      {title:"Frases para planos",type:"phrases",items:[
+        {es:"¿Qué vas a hacer este finde?",pt:"O que vai fazer neste finde?"},
+        {es:"Si hace buen tiempo, vamos a la playa.",pt:"Se fizer bom tempo, praia."},
+        {es:"Ya veremos.",pt:"Vamos ver."},
+        {es:"A ver qué pasa.",pt:"Vamos ver o que rola."}
+      ]},
+      {title:"📝 Exercício",type:"exercise",content:"Planeje o finde usando as 3 formas: \"Voy a...\", \"jugaré...\", \"salgo a las diez.\""}
+    ]
+  },
+  {
+    id:11, icon:"📖", title:"Imperfecto", subtitle:"Memórias e hábitos do passado",
+    sections:[
+      {title:"Formação do Imperfecto",type:"table",headers:["","-ar (hablar)","-er (comer)","-ir (vivir)"],rows:[
+        ["Yo","hablaba","comía","vivía"],["Tú","hablabas","comías","vivías"],
+        ["Él","hablaba","comía","vivía"],["Nosotros","hablábamos","comíamos","vivíamos"],
+        ["Ellos","hablaban","comían","vivían"]
+      ]},
+      {title:"Apenas 3 irregulares!",type:"note",content:"SER → era, eras, era, éramos, eran · IR → iba, ibas, iba, íbamos, iban · VER → veía, veías, veía, veíamos, veían"},
+      {title:"Quando usar",type:"phrases",items:[
+        {es:"Cuando vivía en Brasil, jugaba al fútbol los domingos.",pt:"Hábitos no passado"},
+        {es:"El bar estaba lleno y hacía mucho calor.",pt:"Descrições no passado"},
+        {es:"Mientras yo jugaba, él miraba el móvil.",pt:"Ações simultâneas"},
+        {es:"Era de noche y llovía mucho.",pt:"Contexto de história"}
+      ]},
+      {title:"Fórmula mágica: Imperfecto + Indefinido",type:"note",content:"IMPERFECTO (o que estava acontecendo) + INDEFINIDO (o que aconteceu de repente). Ex: \"Estaba jugando al tenis cuando empezó a llover y tuvimos que parar.\""},
+      {title:"📝 Exercício",type:"exercise",content:"Conte como era sua vida no Brasil vs. agora em Vigo. Imperfecto para o Brasil, presente para agora."}
+    ]
+  },
+  {
+    id:12, icon:"🔥", title:"Nível de rua", subtitle:"Gírias, expressões e fluência",
+    sections:[
+      {title:"Expressões que te fazem soar natural",type:"table",headers:["Expressão","Significado","Quando usar"],rows:[
+        ["Anda ya","Tá de sacanagem","Surpresa"],["Venga, vale","Beleza, combinado","Fechar acordo"],
+        ["Ni de coña","Nem a pau","Recusar"],["Me importa un pimiento","Tô nem aí","Indiferença"],
+        ["Estar flipando","Estar de cara","Choque"],["Ir de culo","Na correria","Ocupado"],
+        ["Mola mogollón","Muito massa","Aprovação"],["Pasarlo de puta madre","Se divertir muito","Diversão"],
+        ["Quedarse en blanco","Dar branco","Esquecer"],["Echar de menos","Sentir saudade","Saudade"],
+        ["No dar abasto","Não dar conta","Trabalho"],["Pillar","Pegar / Entender","Multi-uso"],
+        ["Quedarse frito","Apagar / Dormir","Cansaço"]
+      ]},
+      {title:"Conectores conversacionais",type:"phrases",items:[
+        {es:"O sea",pt:"Ou seja"},{es:"Es que",pt:"É que (justificativa)"},
+        {es:"Bueno",pt:"Bom (coringa)"},{es:"Pues",pt:"Pois / Então"},
+        {es:"A ver",pt:"Vamos ver"},{es:"En plan",pt:"Tipo (gíria jovem)"},
+        {es:"La verdad es que",pt:"A verdade é que"},{es:"Hombre / mujer",pt:"Cara (interjeição)"}
+      ]},
+      {title:"5 dicas de fluência",type:"note",content:"1) Use \"pues\" pra ganhar tempo. 2) Use \"es que\" pra tudo. 3) Repita a última palavra como pergunta se não entendeu. 4) Não traduza do PT — pense na situação. 5) Erre sem medo — espanhóis valorizam quem tenta."},
+      {title:"📝 Exercício final",type:"exercise",content:"Passe uma semana tentando pensar em espanhol. Celular, falando sozinho, planejando o dia. Esse é o salto final."}
+    ]
+  },
+  {
+    id:14, icon:"📚", title:"Gramática essencial", subtitle:"11 tópicos críticos para dominar",
+    sections:[
+      {title:"1. Verbos reflexivos — SE + verbo",type:"grammar",explanation:"Ação que recai sobre o sujeito. Formação: pronome reflexivo + verbo. Exemplos: duchar = banhar; me ducho = eu me banho.",rules:[
+        {label:"Pronomes reflexivos",desc:"Me, te, se, nos, os, se",examples:["Yo me ducho","Tú te despiertas","Él se levanta","Nos sentamos","Os veis","Ellos se acuestan"]},
+        {label:"Verbos reflexivos comuns",desc:"Duchar (banhar), despertarse (acordar), levantarse (levantar), sentarse (sentar), acostarse (deitar), vestirse (vestir), llamarse (chamar-se), peinarse (pentear-se), afeitarse (barbear-se)",examples:["Me despierto a las 7.","Te vistes rápido.","Se llama Juan.","Nos sentamos aquí."]},
+        {label:"Tempo composto com reflexivos",desc:"HABER + PARTICIPIO, o pronome va antes de haber",examples:["Me he ducha do.","Te has levantado.","Se ha acostado."]},
+        {label:"Imperativo reflexivo",desc:"Pronome vai depois do verbo. Com nosotros: -d + nos = -nos",examples:["¡Levántate!","¡Duchemonos!","¡Sentaos!"]}
+      ]},
+      {title:"2. Pronomes dobles — LO + LE = SE",type:"grammar",explanation:"Quando LO/LA/LOS/LAS vem depois de LE/LES, muda para SE. Regra de combinação.",rules:[
+        {label:"Regra geral",desc:"LE + LO/LA/LOS/LAS → SE + LO/LA/LOS/LAS",examples:["Le lo dije (pra ele).","Se la envié (pra ela).","Se los mandé (pra eles).","Se las mostré (pra elas)."]},
+        {label:"Posição nos tempos",desc:"Antes de verbo conjugado ou ao final de infinitivo/gerúndio/imperativo",examples:["Se lo dije.","Voy a se lo mandar.","Enviárselo. (infinitivo)","Diciéndoselo. (gerúndio)","¡Dáselo! (imperativo)"]},
+        {label:"Clarificação",desc:"SE é ambíguo, então se adiciona 'a él', 'a ella', 'a ellos' pra clarificar",examples:["Se lo dije a él.","Se la mostré a ella.","Se los envié a ustedes."]}
+      ]},
+      {title:"3. Imperativo — Comandos e ordens",type:"grammar",explanation:"Formas para dar ordens. Varia muito entre tú, usted, nosotros, vosotros.",rules:[
+        {label:"TÚ (informal, singular)",desc:"Vai a: hablAS → ¡habla! / comES → ¡come! / abres → ¡abre! (negativo: no + subjuntivo)",examples:["¡Habla!","¡Come!","¡Abre la puerta!","¡No hables!","¡No comas!"]},
+        {label:"USTED (formal, singular)",desc:"Usa subjuntivo presente",examples:["¡Hable!","¡Coma!","¡Abra la puerta!","¡No hable!"]},
+        {label:"NOSOTROS (coletivo)",desc:"Usa subjuntivo + removemos 's' final. Ou 'vamos a' + infinitivo",examples:["¡Hablemos!","¡Comamos!","¡Vamos a hablar!"]},
+        {label:"VOSOTROS (plural informal — Espanha)",desc:"Infinitivo com 'd' no final do 'd' → ¡hablad! ¡comed! ¡abrid!",examples:["¡Hablad!","¡Comed!","¡No habléis!"]},
+        {label:"Imperativo + reflexivos",desc:"Pronome vai depois. Com nosotros: -d + nos = -nos",examples:["¡Levántate!","¡Duche nse!","¡Sentémonos!","¡Levantaos!"]}
+      ]},
+      {title:"4. Pretérito imperfecto — Ações repetidas no passado",type:"note",content:"Usado para ações que aconteciam REPETIDAMENTE ou SIMULTANEAMENTE no passado. Conjuga: -aba/-ía. Apenas 3 irregulares: ser (era), ir (iba), ver (veía).",extra:{type:"table",headers:["Quando usar","Exemplo"],rows:[
+        ["Hábitos no passado","Cuando vivía en Brasil, jugaba al fútbol todos los domingos."],
+        ["Descrição de cenário","El bar estaba lleno y hacía mucho calor."],
+        ["Ações simultâneas","Mientras yo jugaba, él miraba el móvil."],
+        ["Tempo, idade no passado","Tenía 25 años. Eran las diez de la noche."],
+        ["Criando contexto para um evento","Estaba durmiendo cuando me llamó."]
+      ]}},
+      {title:"5. Subjuntivo — O tempo do incerteza",type:"grammar",explanation:"Usa-se em cláusulas subordinadas após verbos de vontade, dúvida, emoção. Formação: raiz presente subjuntivo + terminação.",rules:[
+        {label:"Presente subjuntivo — Regulares",desc:"hable, coma, abra (igual ao imperativo usted/nosotros)",examples:["Que hable.","Que comas.","Que abra."]},
+        {label:"Después de: Espero que, Quiero que, Me alegra que, No creo que, Es posible que",desc:"Expresiones + QUE + subjuntivo",examples:["Espero que tengas suerte.","Quiero que vengas mañana.","Me alegra que estés bien.","No creo que sea verdad.","Es posible que llueva."]},
+        {label:"Ojalá + subjuntivo",desc:"'Ojalá' sempre vai com subjuntivo. Significa 'espero que'.",examples:["Ojalá ganes el partido.","Ojalá tengas un buen día.","Ojalá llueva pronto."]},
+        {label:"Aunque + subjuntivo",desc:"'Aunque' (embora) com subjuntivo = dúvida",examples:["Aunque no tenga dinero, lo haré.","Aunque sea difícil, lo intentamos."]}
+      ]},
+      {title:"6. Pretérito pluscuamperfecto — O passado do passado",type:"grammar",explanation:"Ação que aconteceu ANTES de outra ação no passado. Formação: HABER (imperfecto) + PARTICIPIO.",rules:[
+        {label:"Formação",desc:"Había + participio. Tenía para 'já tinha'",examples:["Había llegado antes.","Habías comido ya.","Habían visto esa película."]},
+        {label:"Uso prático",desc:"Quando você quer mostrar que algo aconteceu ANTES de outro evento passado",examples:["Cuando llegué, el partido ya había terminado.","Me encontré con Pedro. Hacía años que no lo veía.","Salimos aunque no había terminado de trabajar."]}
+      ]},
+      {title:"7. Condicional — SE + imperfecto de subjuntivo",type:"grammar",explanation:"Estrutura: Si + imperfecto subjuntivo, condicional (o imperf subjuntivo). Expressa situações hipotéticas.",rules:[
+        {label:"Si + imperfecto subjuntivo, condicional",desc:"Si viviera en Madrid, iría a conciertos.Si tuviera dinero, viajaría.",examples:["Si pudiera, lo haría.","Si fuera millonario, compraría un barco.","Si hablara italiano, viajaría a Italia."]},
+        {label:"Si + pretérito perfecto subjuntivo, condicional perfecto",desc:"Para situações que NO PASARON no passado",examples:["Si hubiera sabido, no habría venido.","Si me hubiera visto, me habría saludado."]}
+      ]},
+      {title:"8. Gerundio vs. Infinitivo",type:"grammar",explanation:"GERUNDIO (-ando, -iendo): ação em progresso. INFINITIVO: ação pura sin contexto temporal.",rules:[
+        {label:"Gerundio",desc:"Acción happening NOW or SIMULTANEOUSLY. Formação: hablando, comiendo, abriendo",examples:["Estoy hablando por teléfono.","Mientras comía, sonó el timbre.","Viendo las noticias, me dormí."]},
+        {label:"Infinitivo",desc:"Após certos verbos (querer, poder, deber, ir a, empezar a, acabar de, dejar de)",examples:["Quiero hablar contigo.","Puedo comer mañana.","Voy a jugar al tenis.","Empezó a llover.","Acababa de llegar."]}
+      ]},
+      {title:"9. Estar + gerundio — Ações em progresso",type:"grammar",explanation:"Forma el presente/pasado continuo: estar (conjugado) + gerundio.",rules:[
+        {label:"Presente continuo",desc:"Ação happening RIGHT NOW",examples:["Estoy trabajando.","Está lloviendo.","Estamos comiendo."]},
+        {label:"Pasado continuo",desc:"Ação happening at a specific moment in the past",examples:["Estaba durmiendo cuando llamó.","Estábamos jugando cuando empezó a llover.","¿Qué estabas haciendo?"]}
+      ]},
+      {title:"10. Preposiciones essenciais — POR vs. PARA",type:"grammar",explanation:"As duas preposições mais confundidas. POR = movimento, causai, duração. PARA = objetivo, destino, dirección.",rules:[
+        {label:"POR (causa, movimento, duração, troca)",desc:"",examples:["Por ti lo hice. (PORQUE — porque é por causa de ti)","Pasé por tu casa. (ATRAVÉS DE)","Trabajo por la mañana. (DURANTE)","Te cambio esto por aquello. (TROCA)","Está hecho por mí. (AGENTE)"]},
+        {label:"PARA (objective, destino, dirección, deadline)",desc:"",examples:["Trabajo para vivir. (OBJETIVO — pra viver)","Este regalo es para ti. (DESTINATÁRIO)","Voy para Madrid. (DIREÇÃO)","Lo necesito para el lunes. (PRAZO)","El diseño es para clientes nuevos. (PROPÓSITO)"]}
+      ]},
+      {title:"11. Verbos que sempre pedem preposição",type:"table",headers:["Verbo + preposição","Significado","Exemplo"],rows:[
+        ["Pensar en","Pensar sobre","Pienso en mi familia."],
+        ["Acordarse de","Lembrar","Me acuerdo de ti."],
+        ["Enterarse de","Ficar sabendo","¿Te enteraste de la noticia?"],
+        ["Enamorarse de","Se apaixonar","Se enamoró de ella."],
+        ["Avergonzarse de","Ter vergonha","Me avergüenza de eso."],
+        ["Contar con","Contar com / Depender","Cuento contigo."],
+        ["Confiar en","Confiar em","Confío en ti."],
+        ["Consistir en","Consistir em","¿En qué consiste el trabajo?"],
+        ["Insistir en","Insistir em","Insiste en venir."],
+        ["Empeñarse en","Insistir teimosamente","Se empeñó en comprar."],
+        ["Apasionarse por","Se apaixonar / ficar apaixonado","Se apasiona por el fútbol."],
+        ["Luchar por","Lutar por","Luchan por sus derechos."],
+        ["Preocuparse por","Preocupar-se com","¿Por qué te preocupas por eso?"],
+        ["Esforzarse por","Se esforçar","Me esfuerzo por mejorar."],
+        ["Enterarse por","Ficar sabendo por","Me enteré por Luis."]
+      ]},
+      {title:"📝 Exercício prático",type:"exercise",content:"Crie 3 frases com cada tópico: 1 reflexivo, 1 imperativo, 1 com 'si' (condicional), 1 com gerundio, 1 com POR e 1 com PARA. Pratique com clientes da GoPrint."}
+    ]
+  },
+  {
+    id:13, icon:"🖨️", title:"Atendimento na gráfica", subtitle:"GoPrint Vigo — clientes, pedidos, problemas",
+    sections:[
+      {title:"Vocabulário de gráfica",type:"table",headers:["Español","Português"],rows:[
+        ["La imprenta / imprenta online","A gráfica / gráfica online"],
+        ["Impresión digital","Impressão digital"],["Tarjetas de visita","Cartões de visita"],
+        ["Flyers / folletos","Flyers / folhetos"],["Cartelería / carteles","Cartazes"],
+        ["Vinilos / pegatinas","Adesivos"],["Lonas / pancartas","Banners / faixas"],
+        ["El diseño / el archivo","O design / o arquivo"],["La prueba de color","A prova de cor"],
+        ["El presupuesto","O orçamento"],["El pedido / encargo","O pedido / encomenda"],
+        ["El plazo de entrega","O prazo de entrega"],["La tirada","A tiragem"]
+      ]},
+      {title:"Papéis, acabamentos e especificações",type:"table",headers:["Español","Português"],rows:[
+        ["El gramaje","A gramatura"],["Papel estucado / couché","Papel couché"],
+        ["Papel mate / brillo","Fosco / brilho"],["Plastificado mate / brillo","Laminação fosca / brilho"],
+        ["Barniz UV / barniz selectivo","Verniz UV / localizado"],["Troquelado","Corte especial / faca"],
+        ["Sangrado / sangre","Sangria (margem de corte)"],["Resolución (ppp / dpi)","Resolução (dpi)"],
+        ["CMYK / cuatricromía","CMYK / quadricromia"],["Tintas planas / Pantone","Cores Pantone"],
+        ["A doble cara / a una cara","Frente e verso / só frente"],["Plegado","Dobrado"],["Grapado","Grampeado"]
+      ]},
+      {title:"Primeiro contato com cliente",type:"phrases",items:[
+        {es:"Hola, bienvenido a GoPrint. ¿En qué puedo ayudarte?",pt:"Bem-vindo à GoPrint. Em que posso ajudar?"},
+        {es:"¿Qué tipo de trabajo necesitas?",pt:"Que tipo de trabalho precisa?"},
+        {es:"¿Tienes ya el diseño preparado o necesitas que te lo hagamos?",pt:"Já tem o design ou precisa que a gente faça?"},
+        {es:"¿Para cuándo lo necesitas?",pt:"Pra quando precisa?"},
+        {es:"¿Cuántas unidades necesitas?",pt:"Quantas unidades precisa?"},
+        {es:"Te paso un presupuesto sin compromiso.",pt:"Te passo um orçamento sem compromisso."},
+        {es:"Te envío el presupuesto por WhatsApp, ¿te parece?",pt:"Te envio o orçamento por WhatsApp, tudo bem?"}
+      ]},
+      {title:"Explicando produtos e opções",type:"phrases",items:[
+        {es:"Para tarjetas te recomiendo estucado de 350 gramos con plastificado mate.",pt:"Pra cartões recomendo couché 350g com laminação fosca."},
+        {es:"El plastificado mate da un toque más elegante y es más resistente.",pt:"A laminação fosca dá um toque mais elegante."},
+        {es:"Los flyers van en 135 o 170 gramos, depende del uso.",pt:"Os flyers vão em 135 ou 170g, depende do uso."},
+        {es:"Si es para repartir en la calle, con 135 gramos va bien.",pt:"Pra distribuir na rua, 135g tá bom."},
+        {es:"¿Quieres acabado brillo o mate?",pt:"Quer acabamento brilho ou fosco?"},
+        {es:"Podemos hacer una prueba de color antes de la tirada completa.",pt:"Podemos fazer prova de cor antes da tiragem."}
+      ]},
+      {title:"Recebendo e verificando arquivos",type:"phrases",items:[
+        {es:"¿Me puedes enviar el archivo en PDF de alta resolución?",pt:"Pode enviar o arquivo em PDF alta resolução?"},
+        {es:"Necesito el archivo en CMYK, no en RGB.",pt:"Preciso do arquivo em CMYK, não RGB."},
+        {es:"El archivo tiene que tener al menos 300 ppp.",pt:"Precisa ter pelo menos 300 dpi."},
+        {es:"Falta el sangrado. Necesito 3 mm de sangre por cada lado.",pt:"Falta a sangria. Preciso de 3mm por lado."},
+        {es:"Las fuentes tienen que ir trazadas / convertidas a curvas.",pt:"As fontes precisam estar em curvas."},
+        {es:"He revisado tu archivo y está todo correcto. Lanzo la producción.",pt:"Revisei e tá tudo certo. Mando pra produção."},
+        {es:"La imagen tiene muy poca resolución, se va a ver pixelada.",pt:"A imagem tem pouca resolução, vai ficar pixelada."},
+        {es:"¿Puedes enviarme el logo en vectorial? PNG no tiene suficiente calidad.",pt:"Pode enviar o logo em vetorial? PNG não tem qualidade."}
+      ]},
+      {title:"Prazos e entrega",type:"phrases",items:[
+        {es:"El plazo de entrega es de 3 a 5 días laborables.",pt:"Prazo de 3 a 5 dias úteis."},
+        {es:"Si lo necesitas urgente, puedo tenerlo para mañana con un pequeño recargo.",pt:"Se for urgente, posso ter pra amanhã com acréscimo."},
+        {es:"Tu pedido ya está en producción.",pt:"Seu pedido já tá em produção."},
+        {es:"Tu pedido está listo para recoger.",pt:"Pedido pronto pra retirar."},
+        {es:"Te lo enviamos por mensajería, llega mañana.",pt:"Enviamos por transportadora, chega amanhã."},
+        {es:"¿Prefieres recogerlo o que te lo enviemos?",pt:"Prefere buscar ou que a gente envie?"},
+        {es:"Perdona el retraso, hemos tenido un problema con la máquina.",pt:"Desculpa o atraso, problema com a máquina."},
+        {es:"Va a tardar un día más de lo previsto. ¿Te parece bien?",pt:"Vai demorar um dia a mais. Tudo bem?"}
+      ]},
+      {title:"Preço, pagamento e orçamento",type:"phrases",items:[
+        {es:"500 tarjetas a doble cara en 350 gramos mate te salen a 35 euros.",pt:"500 cartões frente e verso 350g fosco ficam em 35€."},
+        {es:"A mayor cantidad, mejor precio por unidad.",pt:"Maior quantidade, melhor preço unitário."},
+        {es:"¿Quieres presupuesto para varias cantidades?",pt:"Quer orçamento pra várias quantidades?"},
+        {es:"El precio incluye / no incluye el diseño.",pt:"O preço inclui / não inclui o design."},
+        {es:"Puedes pagar por Bizum, transferencia o tarjeta.",pt:"Pode pagar por Bizum, transferência ou cartão."},
+        {es:"Te aplico el descuento de primer pedido.",pt:"Aplico o desconto de primeiro pedido."},
+        {es:"¿Necesitas factura?",pt:"Precisa de nota fiscal?"},
+        {es:"IVA incluido / más IVA",pt:"Com IVA / + IVA"}
+      ]},
+      {title:"Problemas e reclamações",type:"phrases",items:[
+        {es:"Entiendo tu preocupación. Vamos a solucionarlo.",pt:"Entendo. Vamos resolver."},
+        {es:"Tienes razón, el color no ha salido bien. Lo reimprimimos sin coste.",pt:"Tem razão, a cor não saiu bem. Reimprimimos sem custo."},
+        {es:"Ha habido un error por nuestra parte. Te pido disculpas.",pt:"Houve um erro nosso. Desculpa."},
+        {es:"El color puede variar ligeramente entre pantalla e impresión. Es normal.",pt:"A cor pode variar entre tela e impressão. É normal."},
+        {es:"¿Puedes enviarme una foto para ver el problema?",pt:"Pode enviar foto pra eu ver?"},
+        {es:"Te lo repetimos sin ningún problema.",pt:"A gente refaz sem problema."},
+        {es:"Como compensación, te hago un 15% en tu próximo pedido.",pt:"Como compensação, 15% no próximo pedido."}
+      ]},
+      {title:"WhatsApp com clientes",type:"phrases",items:[
+        {es:"Hola, soy Mateus de GoPrint Vigo. He recibido tu pedido.",pt:"Sou Mateus da GoPrint. Recebi seu pedido."},
+        {es:"Te confirmo que ya he lanzado tu pedido a producción.",pt:"Confirmo que já mandei pra produção."},
+        {es:"Ya tienes tu pedido listo. ¿Cuándo te viene bien recogerlo?",pt:"Pedido pronto. Quando fica bom pra buscar?"},
+        {es:"¿Te mando fotos de cómo ha quedado?",pt:"Te mando fotos de como ficou?"},
+        {es:"Ha quedado genial, mira.",pt:"Ficou muito bom, olha."},
+        {es:"Si necesitas algo más, aquí estoy.",pt:"Se precisar de algo mais, tô aqui."},
+        {es:"Muchas gracias por confiar en GoPrint. ¡Un saludo!",pt:"Obrigado por confiar na GoPrint. Abraço!"}
+      ]},
+      {title:"Fidelizando clientes",type:"phrases",items:[
+        {es:"Si te ha gustado, te agradecería una reseña en Google.",pt:"Se gostou, agradeceria uma avaliação no Google."},
+        {es:"Para tu próximo pedido, precio de cliente habitual.",pt:"Próximo pedido, preço de cliente frequente."},
+        {es:"Estamos en Instagram, @goprintvigo. Síguenos para ofertas.",pt:"Estamos no Instagram @goprintvigo. Siga pra ofertas."}
+      ]},
+      {title:"⚠️ Armadilhas na gráfica",type:"traps",items:[
+        {pt:"\"A gráfica\"",wrong:"\"La gráfica\"",right:"\"La imprenta\" (mais usado na Espanha)"},
+        {pt:"\"Orçamento\"",wrong:"\"Orzamento\"",right:"\"Presupuesto\""},
+        {pt:"\"Folheto\"",wrong:"\"Folheto\"",right:"\"Folleto\" ou \"flyer\""},
+        {pt:"\"Nota fiscal\"",wrong:"\"Nota fiscal\"",right:"\"Factura\""},
+        {pt:"\"Gramatura\"",wrong:"\"Gramatura\"",right:"\"Gramaje\" (350 gramos)"},
+        {pt:"\"Acabamento\"",wrong:"\"Acabamiento\"",right:"\"Acabado\""},
+        {pt:"\"Prazo\"",wrong:"\"Prazo\"",right:"\"Plazo\""},
+        {pt:"\"Sangria\" (margem)",wrong:"\"Sangría\"",right:"\"Sangrado\" ou \"sangre\""}
+      ]},
+      {title:"📝 Exercício da semana",type:"exercise",content:"Simule um atendimento completo por WhatsApp: primeiro contato até entrega. Depois atenda o próximo cliente real 100% em espanhol."}
+    ]
+  }
+];
+
+const SCHEDULE = [
+  {week:1,module:1,focus:"Apresentações + SER/ESTAR"},
+  {week:2,module:2,focus:"Tênis + Pretérito Perfecto"},
+  {week:3,module:3,focus:"Social + GUSTAR"},
+  {week:4,module:4,focus:"Compras/restaurantes + Pronomes"},
+  {week:5,module:5,focus:"Falsos amigos (revisão intensiva)"},
+  {week:6,module:6,focus:"Telefone/burocracia + Condicional"},
+  {week:7,module:7,focus:"Opiniões/reações + Subjuntivo"},
+  {week:8,module:8,focus:"Descrições + Comparativos"},
+  {week:9,module:9,focus:"Passado + Indefinido vs. Perfecto"},
+  {week:10,module:10,focus:"Futuro e planos"},
+  {week:11,module:11,focus:"Imperfecto + narração"},
+  {week:12,module:12,focus:"Gírias e fluência natural"},
+  {week:13,module:13,focus:"Atendimento GoPrint — clientes e pedidos"},
+  {week:14,module:14,focus:"Gramática essencial — 11 tópicos críticos"}
+];
+
+const TIPS = [
+  {icon:"📱",title:"Troque tudo pra espanhol",desc:"Celular, redes sociais, apps — imersão passiva constante."},
+  {icon:"📻",title:"Ouça rádio espanhola",desc:"Cadena SER, Onda Cero — notícias em espanhol claro."},
+  {icon:"📺",title:"Assista séries espanholas",desc:"La Casa de Papel, Élite, Vis a Vis — com legendas em ES."},
+  {icon:"📰",title:"Leia notícias locais",desc:"Faro de Vigo, La Voz de Galicia — vocabulário do dia a dia."},
+  {icon:"🎾",title:"Pratique no tênis",desc:"Peça pros amigos te corrigirem. Errar entre amigos é a melhor escola."},
+  {icon:"⚠️",title:"Cuidado com o galego",desc:"Em Vigo você vai ouvir galego. Parecido com PT, mas não é ES."},
+  {icon:"🗣️",title:"Pense em espanhol",desc:"Falar sozinho, planejar o dia em espanhol. Esse é o salto final."},
+  {icon:"💡",title:"Lembre-se",desc:"Você é lusófono: 80% do vocabulário é transparente. Foque nos falsos amigos e expressões."}
+];
+
+// ========== STATE ==========
+let currentUser = null;
+let activeModule = 1;
+let currentView = 'module';
+let completed = {};
+let openSections = {};
+
+function getStorageKey(suffix) {
+  return `curso-es-${currentUser}-${suffix}`;
+}
+
+function loadUserProgress() {
+  try { 
+    completed = JSON.parse(localStorage.getItem(getStorageKey('progress')) || '{}'); 
+  } catch(e) {}
+}
+
+function saveProgress() {
+  try { 
+    localStorage.setItem(getStorageKey('progress'), JSON.stringify(completed)); 
+  } catch(e) {}
+}
+
+function loginUser(username) {
+  currentUser = username;
+  localStorage.setItem('curso-es-last-user', username);
+  loadUserProgress();
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app-screen').style.display = 'flex';
+  document.getElementById('current-user').textContent = username === 'mateus' ? 'Mateus' : 'Outro usuário';
+  render();
+}
+
+function logout() {
+  currentUser = null;
+  completed = {};
+  openSections = {};
+  activeModule = 1;
+  currentView = 'module';
+  document.getElementById('app-screen').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+}
+
+// Auto-login se houver usuário salvo
+function autoLogin() {
+  const lastUser = localStorage.getItem('curso-es-last-user');
+  if (lastUser) loginUser(lastUser);
+}
+
+// ========== RENDER ==========
+function updateProgress() {
+  const count = Object.keys(completed).length;
+  const total = MODULES.length;
+  document.getElementById('progress-text').textContent = count + '/' + total + ' módulos';
+  document.getElementById('progress-fill').style.width = Math.round((count/total)*100) + '%';
+}
+
+function renderModList() {
+  const list = document.getElementById('mod-list');
+  list.innerHTML = MODULES.map(m => {
+    const isActive = activeModule === m.id && currentView === 'module';
+    const isDone = completed[m.id];
+    return `<button class="mod-item${isActive?' active':''}${isDone?' done':''}" onclick="goToModule(${m.id})">
+      <span class="mod-item-icon">${m.icon}</span>
+      <div class="mod-item-info">
+        <div class="mod-item-title">${m.id}. ${m.title}</div>
+        <div class="mod-item-sub">${m.subtitle}</div>
+      </div>
+      ${isDone?'<span class="mod-item-check">✓</span>':''}
+    </button>`;
+  }).join('');
+}
+
+function renderTable(headers, rows) {
+  return `<div class="table-wrap"><table><thead><tr>${headers.map(h=>'<th>'+h+'</th>').join('')}</tr></thead><tbody>${rows.map((r,i)=>'<tr>'+r.map((c,j)=>'<td>'+c+'</td>').join('')+'</tr>').join('')}</tbody></table></div>`;
+}
+
+function renderPhrases(items) {
+  return items.map(it => `<div class="phrase"><div class="phrase-es">🇪🇸 ${it.es}</div><div class="phrase-pt">🇧🇷 ${it.pt}</div></div>`).join('');
+}
+
+function renderTraps(items) {
+  return items.map(it => `<div class="trap"><div class="trap-from">Você pensa: <strong>${it.pt}</strong></div><div class="trap-wrong">❌ ${it.wrong}</div><div class="trap-right">✅ ${it.right}</div></div>`).join('');
+}
+
+function renderGrammar(s) {
+  let html = `<p class="grammar-exp">${s.explanation}</p>`;
+  html += s.rules.map(r => `<div class="grammar-rule"><div class="grammar-label">${r.label}</div><div class="grammar-desc">${r.desc}</div>${r.examples.length?'<div class="grammar-examples">'+r.examples.map(e=>'<span class="grammar-ex">'+e+'</span>').join('')+'</div>':''}</div>`).join('');
+  if (s.differences) {
+    html += `<div style="margin-top:12px"><div style="font-weight:600;color:#1D3557;font-size:14px;margin-bottom:6px">${s.differences.title}</div>${renderTable(s.differences.headers, s.differences.rows)}</div>`;
+  }
+  return html;
+}
+
+function renderNote(s) {
+  let html = `<div class="note-box">${s.content}</div>`;
+  if (s.extra && s.extra.type === 'table') {
+    html += renderTable(s.extra.headers, s.extra.rows);
+  }
+  return html;
+}
+
+function renderExercise(content) {
+  return `<div class="exercise"><div class="exercise-label">Exercício prático</div><div class="exercise-text">${content}</div></div>`;
+}
+
+function renderSectionBody(s) {
+  if (s.type === 'table') return renderTable(s.headers, s.rows);
+  if (s.type === 'phrases') return renderPhrases(s.items);
+  if (s.type === 'traps') return renderTraps(s.items);
+  if (s.type === 'grammar') return renderGrammar(s);
+  if (s.type === 'note') return renderNote(s);
+  if (s.type === 'exercise') return renderExercise(s.content);
+  return '';
+}
+
+function renderModule() {
+  const mod = MODULES.find(m => m.id === activeModule);
+  if (!mod) return;
+  const isDone = completed[mod.id];
+
+  let html = `<div class="main-content">
+    <div class="mod-header">
+      <div>
+        <div class="mod-header-icon">${mod.icon}</div>
+        <h1>Módulo ${mod.id} — ${mod.title}</h1>
+        <p>${mod.subtitle}</p>
+      </div>
+      <button class="btn-complete${isDone?' done':''}" onclick="toggleComplete(${mod.id})">${isDone?'✓ Concluído':'Marcar concluído'}</button>
+    </div>
+    <button class="btn-expand" onclick="expandAll()">Expandir todas as seções</button>`;
+
+  mod.sections.forEach((s, i) => {
+    const key = mod.id + '-' + i;
+    const isOpen = openSections[key];
+    html += `<div class="section${isOpen?' open':''}" id="sec-${key}">
+      <button class="section-header" onclick="toggleSection('${key}')">
+        <span>${s.title}</span>
+        <span class="section-arrow">▶</span>
+      </button>
+      <div class="section-body">${renderSectionBody(s)}</div>
+    </div>`;
+  });
+
+  // Navigation
+  html += `<div class="mod-nav">`;
+  if (mod.id > 1) {
+    html += `<button class="nav-btn" onclick="goToModule(${mod.id-1})">← Módulo ${mod.id-1}</button>`;
+  } else {
+    html += '<div></div>';
+  }
+  if (mod.id < MODULES.length) {
+    html += `<button class="nav-btn next" onclick="goToModule(${mod.id+1})">Módulo ${mod.id+1} →</button>`;
+  } else {
+    html += '<div class="nav-btn final">🎉 ¡Curso completo!</div>';
+  }
+  html += '</div></div>';
+
+  document.getElementById('main').innerHTML = html;
+}
+
+function renderSchedule() {
+  let html = `<div class="main-content">
+    <h2 style="color:#1D3557;font-size:22px;font-weight:800;margin-bottom:4px">Cronograma de 14 semanas</h2>
+    <p style="color:#6C757D;font-size:14px;margin-bottom:20px">1 módulo por semana = fluência conversacional completa</p>`;
+  SCHEDULE.forEach(s => {
+    const done = completed[s.module];
+    const mod = MODULES[s.module - 1];
+    html += `<div class="schedule-item${done?' done':''}" onclick="goToModule(${s.module})">
+      <div class="schedule-num">${done?'✓':s.week}</div>
+      <div class="schedule-info">
+        <div class="schedule-title">Semana ${s.week} — ${mod.title}</div>
+        <div class="schedule-focus">${s.focus}</div>
+      </div>
+      <span class="schedule-icon">${mod.icon}</span>
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('main').innerHTML = html;
+}
+
+function renderTips() {
+  let html = `<div class="main-content">
+    <h2 style="color:#1D3557;font-size:22px;font-weight:800;margin-bottom:4px">Dicas para aprender em Vigo</h2>
+    <p style="color:#6C757D;font-size:14px;margin-bottom:20px">Sua melhor ferramenta é a rua.</p>`;
+  TIPS.forEach((t,i) => {
+    html += `<div class="tip">
+      <span class="tip-icon">${t.icon}</span>
+      <div><div class="tip-title">${t.title}</div><div class="tip-desc">${t.desc}</div></div>
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('main').innerHTML = html;
+}
+
+function render() {
+  updateProgress();
+  renderModList();
+  if (currentView === 'module') renderModule();
+  else if (currentView === 'schedule') renderSchedule();
+  else if (currentView === 'tips') renderTips();
+
+  // Update tabs
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === currentView);
+  });
+}
+
+// ========== ACTIONS ==========
+function goToModule(id) {
+  activeModule = id;
+  currentView = 'module';
+  openSections = {};
+  render();
+  document.getElementById('main').scrollTop = 0;
+  closeSidebar();
+}
+
+function switchView(view) {
+  currentView = view;
+  render();
+  document.getElementById('main').scrollTop = 0;
+  closeSidebar();
+}
+
+function toggleComplete(id) {
+  if (completed[id]) delete completed[id];
+  else completed[id] = true;
+  saveProgress();
+  render();
+}
+
+function toggleSection(key) {
+  openSections[key] = !openSections[key];
+  const el = document.getElementById('sec-' + key);
+  if (el) el.classList.toggle('open', openSections[key]);
+}
+
+function expandAll() {
+  const mod = MODULES.find(m => m.id === activeModule);
+  if (!mod) return;
+  mod.sections.forEach((_, i) => { openSections[mod.id + '-' + i] = true; });
+  render();
+}
+
+function toggleSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  const hb = document.querySelector('.hamburger');
+  sb.classList.toggle('open');
+  ov.classList.toggle('show');
+  hb.textContent = sb.classList.contains('open') ? '✕' : '☰';
+}
+
+function closeSidebar() {
+  const sb = document.getElementById('sidebar');
+  const ov = document.getElementById('overlay');
+  const hb = document.querySelector('.hamburger');
+  if (window.innerWidth < 768) {
+    sb.classList.remove('open');
+    ov.classList.remove('show');
+    hb.textContent = '☰';
+  }
+}
+
+// INIT
+autoLogin();
+</script>
+</body>
+</html>
